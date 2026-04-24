@@ -12,7 +12,7 @@ const timelineData = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#030712] text-white overflow-x-hidden font-sans selection:bg-blue-500/30">
-      {/* 极客网格背景 - 增加了更细腻的线性感 */}
+      {/* 极客网格背景 */}
       <div className="fixed inset-0 z-0 opacity-20 pointer-events-none" 
            style={{ 
              backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', 
@@ -29,12 +29,18 @@ export default function Home() {
               <span className="text-blue-500 font-mono text-xs tracking-[0.4em] uppercase animate-pulse">System Online // Node: HK</span>
             </div>
             
-            <h1 className="text-[12vw] sm:text-7xl md:text-9xl font-black tracking-tighter mb-8 md:mb-10 leading-[0.9] mix-blend-difference break-words">
+            {/* 修复后的标题：已注入 12vw 适配与 Framer Motion 动画 */}
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              className="text-[12vw] sm:text-7xl md:text-9xl font-black tracking-tighter mb-8 md:mb-10 leading-[0.9] mix-blend-difference break-words"
+            >
               GEEK <br /> 
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-600">
                 COMMUNITY.
               </span>
-            </h1>
+            </motion.h1>
             
             <p className="text-xl md:text-2xl text-gray-400 mb-16 max-w-2xl leading-relaxed font-light">
               Full-stack Development & AI Exploration. <br />
@@ -42,12 +48,25 @@ export default function Home() {
             </p>
             
             <div className="flex flex-wrap gap-8">
-              <a href="#repos" className="group px-12 py-5 bg-white text-black font-bold rounded-full hover:scale-105 transition-all flex items-center gap-3 no-underline shadow-2xl shadow-blue-500/20">
+              {/* 按钮交互 1：查看仓库 */}
+              <motion.a 
+                href="#repos" 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="group px-12 py-5 bg-white text-black font-bold rounded-full flex items-center gap-3 no-underline shadow-2xl shadow-blue-500/20"
+              >
                 <Terminal size={20} className="group-hover:rotate-12 transition-transform" /> 查看仓库
-              </a>
-              <a href="#timeline" className="group px-12 py-5 bg-transparent text-white font-bold rounded-full border border-gray-800 hover:border-blue-500 transition-all flex items-center gap-3 no-underline backdrop-blur-md">
+              </motion.a>
+
+              {/* 按钮交互 2：发展轴 */}
+              <motion.a 
+                href="#timeline" 
+                whileHover={{ scale: 1.05, borderColor: "#3b82f6" }}
+                whileTap={{ scale: 0.95 }}
+                className="group px-12 py-5 bg-transparent text-white font-bold rounded-full border border-gray-800 flex items-center gap-3 no-underline backdrop-blur-md"
+              >
                 <Sparkles size={20} className="text-blue-400 group-hover:animate-spin" /> 发展轴
-              </a>
+              </motion.a>
             </div>
           </motion.div>
         </header>
@@ -69,7 +88,6 @@ export default function Home() {
                 viewport={{ once: true, margin: "-100px" }}
                 className="relative group"
               >
-                {/* 动态发光圆点 */}
                 <div className="absolute -left-[69px] top-2 w-4 h-4 bg-[#030712] border border-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)] z-10 transition-all group-hover:scale-150 group-hover:bg-blue-500" />
                 <div className="absolute -left-[69px] top-2 w-4 h-4 bg-blue-500 rounded-full animate-ping opacity-20" />
                 
@@ -106,7 +124,11 @@ export default function Home() {
               { name: "AIGC Project Hub", tags: ["React", "AI", "Python"], status: "Active" },
               { name: "Simulation Engine", tags: ["Flutter", "Game", "Logic"], status: "Beta" }
             ].map((repo, i) => (
-              <div key={i} className="p-12 bg-gray-900/20 border border-gray-800/50 rounded-[2rem] backdrop-blur-xl hover:border-blue-500/40 hover:bg-gray-900/40 transition-all group relative overflow-hidden">
+              <motion.div 
+                key={i} 
+                whileHover={{ y: -10 }}
+                className="p-12 bg-gray-900/20 border border-gray-800/50 rounded-[2rem] backdrop-blur-xl hover:border-blue-500/40 hover:bg-gray-900/40 transition-all group relative overflow-hidden"
+              >
                 <div className="absolute -top-10 -right-10 opacity-5 group-hover:opacity-10 transition-opacity">
                   <Code2 size={200} />
                 </div>
@@ -125,7 +147,7 @@ export default function Home() {
                    ))}
                    <span className="ml-auto text-xs font-black text-blue-600/50 uppercase tracking-[0.2em] self-center">{repo.status}</span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>
@@ -140,4 +162,4 @@ export default function Home() {
       </div>
     </main>
   );
-} 
+}
