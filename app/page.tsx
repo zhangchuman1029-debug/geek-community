@@ -29,7 +29,6 @@ export default function Home() {
               <span className="text-blue-500 font-mono text-xs tracking-[0.4em] uppercase animate-pulse">System Online // Node: HK</span>
             </div>
             
-            {/* 修复后的标题：已注入 12vw 适配与 Framer Motion 动画 */}
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -48,7 +47,6 @@ export default function Home() {
             </p>
             
             <div className="flex flex-wrap gap-8">
-              {/* 按钮交互 1：查看仓库 */}
               <motion.a 
                 href="#repos" 
                 whileHover={{ scale: 1.05 }}
@@ -58,7 +56,6 @@ export default function Home() {
                 <Terminal size={20} className="group-hover:rotate-12 transition-transform" /> 查看仓库
               </motion.a>
 
-              {/* 按钮交互 2：发展轴 */}
               <motion.a 
                 href="#timeline" 
                 whileHover={{ scale: 1.05, borderColor: "#3b82f6" }}
@@ -71,7 +68,7 @@ export default function Home() {
           </motion.div>
         </header>
 
-        {/* 2. Timeline Section */}
+        {/* 2. Timeline Section (已升级：滚动弹出效果) */}
         <section id="timeline" className="py-32">
           <div className="flex items-center gap-6 mb-24">
             <h2 className="text-4xl font-black italic tracking-tighter">GROWTH AXIS</h2>
@@ -83,9 +80,19 @@ export default function Home() {
             {timelineData.map((item, index) => (
               <motion.div 
                 key={index}
-                initial={{ opacity: 0, x: 30 }}
+                // 初始状态：透明且向右偏
+                initial={{ opacity: 0, x: 50 }}
+                // 滚动进入视野时：滑回原位
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                // 滚动配置
+                viewport={{ once: false, amount: 0.3 }}
+                // 弹簧物理动画
+                transition={{ 
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 12,
+                  delay: index * 0.15 
+                }}
                 className="relative group"
               >
                 <div className="absolute -left-[69px] top-2 w-4 h-4 bg-[#030712] border border-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)] z-10 transition-all group-hover:scale-150 group-hover:bg-blue-500" />
@@ -126,8 +133,12 @@ export default function Home() {
             ].map((repo, i) => (
               <motion.div 
                 key={i} 
-                whileHover={{ y: -10 }}
-                className="p-12 bg-gray-900/20 border border-gray-800/50 rounded-[2rem] backdrop-blur-xl hover:border-blue-500/40 hover:bg-gray-900/40 transition-all group relative overflow-hidden"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2 }}
+                whileHover={{ y: -10, borderColor: "rgba(59, 130, 246, 0.5)" }}
+                className="p-12 bg-gray-900/20 border border-gray-800/50 rounded-[2rem] backdrop-blur-xl hover:bg-gray-900/40 transition-all group relative overflow-hidden"
               >
                 <div className="absolute -top-10 -right-10 opacity-5 group-hover:opacity-10 transition-opacity">
                   <Code2 size={200} />
