@@ -29,9 +29,11 @@ export default function Home() {
               <span className="text-blue-500 font-mono text-xs tracking-[0.4em] uppercase animate-pulse">System Online // Node: HK</span>
             </div>
             
-            <h1 className="text-7xl md:text-9xl font-black tracking-tighter mb-10 leading-[0.8] mix-blend-difference">
+            <h1 className="text-[12vw] sm:text-7xl md:text-9xl font-black tracking-tighter mb-8 md:mb-10 leading-[0.9] mix-blend-difference break-words">
               GEEK <br /> 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-600">COMMUNITY.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-600">
+                COMMUNITY.
+              </span>
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-400 mb-16 max-w-2xl leading-relaxed font-light">
