@@ -62,7 +62,7 @@ export default function Home() {
           </motion.div>
         </header>
 
-        {/* --- Timeline Section: 强化轴线与高密度布局 --- */}
+        {/* --- Timeline Section: 强化轴线 + 未完待续 --- */}
         <section id="timeline" className="py-20 border-t border-white/5">
           <div className="flex justify-between items-end mb-12">
             <h2 className="text-4xl font-black italic tracking-tighter uppercase">Growth Axis</h2>
@@ -70,12 +70,13 @@ export default function Home() {
           </div>
           
           <div className="relative md:overflow-x-auto scrollbar-hide pb-8">
-            <div className="relative flex flex-col md:w-max min-w-full px-4">
+            {/* 增加了右侧内边距 pr-40，给文字留出空间 */}
+            <div className="relative flex flex-col md:w-max min-w-full px-4 md:pr-40">
               
               {/* 1. 上排内容 (奇数项) */}
               <div className="hidden md:flex gap-6 mb-2"> 
                 {timelineData.map((item, index) => (
-                  <div key={index} className="w-[160px] flex-none"> {/* 横向距离缩小 1/3 */}
+                  <div key={index} className="w-[160px] flex-none"> 
                     {index % 2 !== 0 ? (
                       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex flex-col gap-2"> 
                         {item.img && <img src={item.img} alt={item.title} className="w-full h-auto max-w-[86px] mx-auto rounded-sm opacity-80 hover:opacity-100 transition-opacity" />}
@@ -84,7 +85,6 @@ export default function Home() {
                           <h3 className="text-[13px] font-bold uppercase text-white leading-tight mt-0.5 group-hover:text-blue-400 transition-colors">{item.title}</h3>
                           <p className="text-gray-500 text-[10px] mt-1 leading-tight line-clamp-2">{item.desc}</p>
                         </div>
-                        {/* 对应变粗的连接线 */}
                         <div className="h-3 w-[1.5px] bg-white/40 mx-auto" /> 
                       </motion.div>
                     ) : <div className="h-10" />}
@@ -92,8 +92,23 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* 2. 中间主轴线 - 70% 透明度白色，2px 粗 */}
-              <div className="hidden md:block h-[2px] w-full bg-white/70 shadow-[0_0_10px_rgba(255,255,255,0.2)] mb-2" />
+              {/* 2. 中间主轴线 - 增加右侧渐变消失与文字 */}
+              <div className="relative hidden md:flex items-center w-full mb-2">
+                {/* 主轴线：从 70% 白色渐变到透明 */}
+                <div className="h-[2px] flex-1 bg-gradient-to-r from-white/70 via-white/70 to-transparent shadow-[0_0_10px_rgba(255,255,255,0.1)]" />
+                
+                {/* To be continued 文字 */}
+                <motion.div 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                  className="absolute left-full ml-4 whitespace-nowrap"
+                >
+                  <span className="text-blue-500 font-mono text-[10px] tracking-[0.3em] uppercase italic">
+                    To be continued...
+                  </span>
+                </motion.div>
+              </div>
 
               {/* 3. 下排内容 (偶数项) */}
               <div className="flex flex-col md:flex-row gap-6 mt-2">
@@ -111,6 +126,7 @@ export default function Home() {
                       </motion.div>
                     ) : (
                       <div className="md:hidden block mb-10 last:mb-0 border-l border-white/20 pl-4">
+                        {/* 移动端保留逻辑 */}
                         <span className="text-[8px] text-white/50 font-mono">{item.date}</span>
                         <h3 className="text-sm font-bold uppercase text-white mt-0.5">{item.title}</h3>
                         <p className="text-gray-500 text-[10px] mt-1">{item.desc}</p>
@@ -119,6 +135,10 @@ export default function Home() {
                     )}
                   </div>
                 ))}
+                {/* 移动端末尾显示文字 */}
+                <div className="md:hidden py-4 opacity-50 italic text-[10px] font-mono tracking-widest">
+                  &gt; To be continued...
+                </div>
               </div>
 
             </div>
