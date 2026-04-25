@@ -62,7 +62,7 @@ export default function Home() {
           </motion.div>
         </header>
 
-        {/* --- Timeline Section: 稳固版全展现布局 --- */}
+        {/* --- Timeline Section: 精致缩小版布局 --- */}
         <section id="timeline" className="py-24 border-t border-white/5">
           <div className="flex justify-between items-end mb-16">
             <h2 className="text-5xl font-black italic tracking-tighter uppercase">Growth Axis</h2>
@@ -70,54 +70,54 @@ export default function Home() {
           </div>
           
           <div className="relative md:overflow-x-auto scrollbar-hide pb-12">
-            {/* 这里的 flex-col 确保了空间由内容真实撑开 */}
             <div className="relative flex flex-col md:w-max min-w-full">
               
               {/* 1. 上排内容 (奇数项) */}
-              <div className="hidden md:flex gap-12 mb-6">
+              <div className="hidden md:flex gap-10 mb-5"> {/* 稍微收紧了间距 */}
                 {timelineData.map((item, index) => (
-                  <div key={index} className="w-[280px] flex-none">
+                  <div key={index} className="w-[260px] flex-none"> {/* 卡片宽度也稍微收紧 */}
                     {index % 2 !== 0 ? (
-                      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex flex-col gap-4">
-                        {item.img && <img src={item.img} alt={item.title} className="w-full h-auto max-w-[200px] mx-auto rounded-lg opacity-80 hover:opacity-100 transition-opacity" />}
-                        <div className="px-2">
-                          <span className="text-[10px] text-blue-500 font-mono">{item.date}</span>
-                          <h3 className="text-lg font-bold uppercase text-white mt-1">{item.title}</h3>
-                          <p className="text-gray-500 text-xs mt-2 leading-relaxed">{item.desc}</p>
+                      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex flex-col gap-3"> {/* 内部间距收紧 */}
+                        {/* 🔥 🔥 火力全开：图片缩小三分之一，max-w-[130px] */}
+                        {item.img && <img src={item.img} alt={item.title} className="w-full h-auto max-w-[130px] mx-auto rounded opacity-80 hover:opacity-100 transition-opacity" />}
+                        <div className="px-1 text-center">
+                          <span className="text-[9px] text-blue-500 font-mono tracking-tighter">{item.date}</span>
+                          <h3 className="text-base font-bold uppercase text-white leading-tight mt-1 group-hover:text-blue-400 transition-colors">{item.title}</h3>
+                          <p className="text-gray-500 text-[11px] mt-2 leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all">{item.desc}</p>
                         </div>
-                        <div className="h-8 w-px bg-blue-500/30 mx-auto" /> {/* 向上连接线 */}
+                        <div className="h-6 w-px bg-blue-500/20 mx-auto" /> {/* 缩短连接线 */}
                       </motion.div>
-                    ) : <div className="h-20" />} {/* 偶数项占位 */}
+                    ) : <div className="h-16" />} {/* 偶数项占位缩短 */}
                   </div>
                 ))}
               </div>
 
               {/* 2. 中间主轴线 */}
-              <div className="hidden md:block h-[2px] w-full bg-gradient-to-r from-blue-600/50 via-blue-400/20 to-transparent mb-6" />
+              <div className="hidden md:block h-px w-full bg-gradient-to-r from-blue-600/30 via-blue-400/10 to-transparent mb-5" />
 
               {/* 3. 下排内容 (偶数项) */}
-              <div className="flex flex-col md:flex-row gap-12 mt-6">
+              <div className="flex flex-col md:flex-row gap-10 mt-5">
                 {timelineData.map((item, index) => (
-                  <div key={index} className="w-full md:w-[280px] flex-none">
+                  <div key={index} className="w-full md:w-[260px] flex-none">
                     {index % 2 === 0 ? (
-                      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex flex-col gap-4">
-                        <div className="hidden md:block h-8 w-px bg-blue-500/30 mx-auto" /> {/* 向下连接线 */}
-                        <div className="px-2">
-                          <span className="text-[10px] text-blue-500 font-mono">{item.date}</span>
-                          <h3 className="text-lg font-bold uppercase text-white mt-1">{item.title}</h3>
-                          <p className="text-gray-500 text-xs mt-2 leading-relaxed">{item.desc}</p>
+                      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex flex-col gap-3 group">
+                        <div className="hidden md:block h-6 w-px bg-blue-500/20 mx-auto" /> {/* 缩短连接线 */}
+                        <div className="px-1 text-center">
+                          <span className="text-[9px] text-blue-500 font-mono tracking-tighter">{item.date}</span>
+                          <h3 className="text-base font-bold uppercase text-white leading-tight mt-1 group-hover:text-blue-400 transition-colors">{item.title}</h3>
+                          <p className="text-gray-500 text-[11px] mt-2 leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all">{item.desc}</p>
                         </div>
-                        {item.img && <img src={item.img} alt={item.title} className="w-full h-auto max-w-[200px] mx-auto rounded-lg opacity-80 hover:opacity-100 transition-opacity mt-2" />}
+                        {/* 🔥 🔥 火力全开：图片缩小三分之一，max-w-[130px] */}
+                        {item.img && <img src={item.img} alt={item.title} className="w-full h-auto max-w-[130px] mx-auto rounded opacity-80 hover:opacity-100 transition-opacity mt-1" />}
                       </motion.div>
                     ) : (
-                      // 移动端在下排也显示奇数项（降级为单列）
-                      <div className="md:hidden block">
-                        <div className="px-2">
-                          <span className="text-[10px] text-blue-500 font-mono">{item.date}</span>
-                          <h3 className="text-lg font-bold uppercase text-white mt-1">{item.title}</h3>
-                          <p className="text-gray-500 text-xs mt-2 leading-relaxed">{item.desc}</p>
+                      <div className="md:hidden block mb-12 last:mb-0">
+                        <div className="px-1 text-center">
+                          <span className="text-[9px] text-blue-500 font-mono tracking-tighter">{item.date}</span>
+                          <h3 className="text-base font-bold uppercase text-white leading-tight mt-1">{item.title}</h3>
+                          <p className="text-gray-500 text-[11px] mt-2 leading-relaxed">{item.desc}</p>
                         </div>
-                        {item.img && <img src={item.img} alt={item.title} className="w-full h-auto max-w-[200px] rounded-lg mt-4" />}
+                        {item.img && <img src={item.img} alt={item.title} className="w-full h-auto max-w-[130px] mx-auto rounded mt-3" />}
                       </div>
                     )}
                   </div>
