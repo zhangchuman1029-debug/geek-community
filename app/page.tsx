@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Terminal, Sparkles, Code2, GitBranch, Cpu, Layers, Activity, Globe, database, Rss } from "lucide-react";
+import { Terminal, Sparkles, Code2, GitBranch, Cpu, Layers, Activity, Globe, Database, Rss } from "lucide-react";
 
 // 1. 更新后的数据源
 const timelineData = [
