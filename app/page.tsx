@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Terminal, Sparkles, Code2, GitBranch, Cpu, Zap } from "lucide-react";
+import { Terminal, Sparkles, Code2, BookOpen,GitBranch, Cpu, Zap } from "lucide-react";
 
 const timelineData = [
   { 
@@ -151,28 +151,45 @@ export default function Home() {
           
           <div className="flex items-end justify-between mb-20">
             <h2 className="text-5xl font-black italic tracking-tighter mb-2 uppercase">Repository</h2>
-            <GitBranch className="text-blue-900/30" size={80} />
+            <GitBranch className="text-white/20" size={80} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10"> {/* 保持 2 列，增加间距 gap-10 */}
             {[
-              { name: "AIGC Project Hub", tags: ["React", "AI", "Python"], icon: <Zap size={24} /> },
-              { name: "Simulation Engine", tags: ["Flutter", "Game", "Logic"], icon: <Cpu size={24} /> }
+              { 
+                name: "AIGC Project Hub", 
+                tags: ["Next.js", "AI", "Full-stack"], 
+                icon: <Zap size={24} />, 
+                desc: "集成 DeepSeek 与多项 AI 能力的工具集。包含知识提取、RSS 自动化等核心项目。",
+                link: "#",
+                isExternal: false
+              },
+              { 
+                name: "Community Library", 
+                tags: ["Calibre", "Library", "Archive"], 
+                icon: <BookOpen size={24} />, 
+                desc: "极客社区专属图书馆。收录大量技术典籍与数字档案，支持云端深度检索与阅读。",
+                link: "https://geekhub.studypath.top/calibre/",
+                isExternal: true
+              }
             ].map((repo, i) => (
-              <motion.div 
-                key={i} 
-                whileHover={{ y: -8, borderColor: "rgba(59,130,246,0.3)" }} 
-                className="p-10 bg-white/[0.02] border border-white/5 rounded-[2.5rem] group relative overflow-hidden backdrop-blur-3xl"
+              <motion.a 
+                key={i}
+                href={repo.link}
+                target={repo.isExternal ? "_blank" : "_self"}
+                whileHover={{ y: -8, borderColor: "rgba(255,255,255,0.2)" }} 
+                className="p-12 bg-white/[0.02] border border-white/5 rounded-[3rem] group relative overflow-hidden backdrop-blur-3xl no-underline block"
               >
-                <div className="flex justify-between items-start mb-6">
-                  <div className="p-3 bg-blue-500/10 rounded-xl text-blue-500">{repo.icon}</div>
-                  <div className="text-[10px] text-gray-600 font-mono tracking-widest">0{i+1}</div>
+                <div className="flex justify-between items-start mb-8">
+                  <div className="p-4 bg-white/5 rounded-2xl text-white group-hover:text-blue-400 transition-colors">{repo.icon}</div>
+                  <div className="text-[11px] text-gray-600 font-mono tracking-[0.3em]">0{i+1}</div>
                 </div>
-                <h3 className="text-3xl font-bold mb-4 tracking-tight group-hover:text-blue-400 transition-colors">{repo.name}</h3>
-                <p className="text-gray-500 mb-8 leading-relaxed font-light">探索全栈开发的更多可能性，构建高效稳定的数字基石。</p>
-                <div className="flex flex-wrap gap-2">
-                   {repo.tags.map(t => <span key={t} className="text-[9px] px-3 py-1 bg-white/5 rounded-lg border border-white/5 uppercase font-medium">{t}</span>)}
+                <h3 className="text-3xl font-black mb-6 tracking-tight group-hover:text-white transition-colors uppercase italic">{repo.name}</h3>
+                <p className="text-gray-500 mb-10 text-base leading-relaxed font-light">{repo.desc}</p>
+                <div className="flex flex-wrap gap-3">
+                   {repo.tags.map(t => <span key={t} className="text-[10px] px-4 py-1.5 bg-white/5 rounded-full border border-white/10 uppercase font-bold text-gray-400 tracking-wider">{t}</span>)}
                 </div>
-              </motion.div>
+              </motion.a>
             ))}
           </div>
         </section>
