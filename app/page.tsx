@@ -30,23 +30,16 @@ const timelineData = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#030712] text-white overflow-x-hidden font-sans selection:bg-blue-500/30">
-      {/* 动态网格背景 */}
       <div className="fixed inset-0 z-0 opacity-20 pointer-events-none" 
            style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         
+        {/* --- Hero Section 保持完美状态 --- */}
         <header className="pt-48 pb-32">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="flex items-center gap-3 mb-10">
-              <motion.div 
-                animate={{ width: [0, 48] }}
-                className="h-[1px] bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.8)]" 
-              />
+              <motion.div animate={{ width: [0, 48] }} className="h-[1px] bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.8)]" />
               <span className="text-blue-500 font-mono text-xs tracking-[0.4em] uppercase">Node: Hong Kong // Secure</span>
             </div>
             <h1 className="text-[12vw] sm:text-7xl md:text-9xl font-black tracking-tighter mb-10 leading-[0.85] uppercase italic">
@@ -69,54 +62,81 @@ export default function Home() {
           </motion.div>
         </header>
 
+        {/* --- Timeline Section: 全新交替波形布局 --- */}
         <section id="timeline" className="py-32 border-t border-white/5">
-          <div className="flex justify-between items-end mb-24">
+          <div className="flex justify-between items-end mb-16">
             <h2 className="text-5xl font-black italic tracking-tighter uppercase">Growth Axis</h2>
             <div className="hidden md:block h-[1px] flex-1 mx-12 bg-gradient-to-r from-blue-500/50 to-transparent" />
           </div>
           
-          <div className="relative md:overflow-x-auto md:pb-24 scrollbar-hide">
-            <div className="relative md:flex md:w-max md:gap-12">
-              {timelineData.map((item, index) => (
-                <motion.div 
-                  key={index} 
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  className="relative flex flex-col md:w-[320px] md:flex-none mb-24 md:mb-0 group"
-                >
-                  <div className="relative rounded-2xl p-px bg-gradient-to-b from-white/10 to-transparent hover:from-blue-500/40 transition-all duration-500">
-                    <div className="bg-[#030712] rounded-2xl overflow-hidden p-4">
-                      {item.img && (
-                        <div className="relative mb-6 rounded-lg overflow-hidden bg-zinc-900">
-                          <img 
-                            src={item.img} 
-                            alt={item.title} 
-                            className="w-full h-auto max-h-[220px] object-contain transition-all duration-700 
-                                     md:grayscale md:opacity-50 group-hover:grayscale-0 group-hover:opacity-100 
-                                     grayscale-0 opacity-100" /* 手机端默认彩色 */
-                          />
+          <div className="relative md:overflow-x-auto scrollbar-hide">
+            {/* 电脑端高度固定，制造上下分布的空间 */}
+            <div className="relative md:flex md:w-max md:gap-8 md:h-[650px] md:items-center">
+              
+              {/* 贯穿全局的核心轴线 (居中) */}
+              <div className="hidden md:block absolute top-1/2 left-0 right-0 h-[1px] bg-blue-500/20 z-0" />
+
+              {timelineData.map((item, index) => {
+                // 判断偶数/奇数：偶数在下，奇数在上
+                const isEven = index % 2 === 0;
+
+                return (
+                  <motion.div 
+                    key={index} 
+                    initial={{ opacity: 0, y: isEven ? 40 : -40 }} // 从上下两端汇聚的动画
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ delay: index * 0.15, duration: 0.6, ease: "easeOut" }}
+                    // 容器：手机端正常排列，电脑端变成相对定位占位块
+                    className="relative flex flex-col md:block md:w-[340px] md:h-full flex-none mb-20 md:mb-0 group z-10"
+                  >
+                    {/* 极简连接线 (仅电脑端显示) */}
+                    <div className={`hidden md:block absolute left-1/2 w-[1px] bg-blue-500/20 group-hover:bg-blue-400 group-hover:shadow-[0_0_8px_rgba(59,130,246,0.8)] transition-all duration-500 z-0 ${
+                      isEven ? 'top-1/2 h-12' : 'bottom-1/2 h-12'
+                    }`} />
+
+                    {/* 卡片绝对定位逻辑 */}
+                    <div className={`relative md:absolute md:w-full md:left-0 z-10 ${
+                      isEven 
+                        ? 'md:top-1/2 md:pt-12' // 偶数排在轴线下方
+                        : 'md:bottom-1/2 md:pb-12' // 奇数排在轴线上方
+                    }`}>
+                      
+                      {/* 卡片视觉容器 (保持之前调校好的高级感) */}
+                      <div className="relative rounded-2xl p-px bg-gradient-to-b from-white/10 to-transparent hover:from-blue-500/50 transition-all duration-500">
+                        <div className="bg-[#030712] rounded-2xl overflow-hidden p-5 shadow-2xl">
+                          {item.img && (
+                            <div className="relative mb-6 rounded-lg overflow-hidden bg-zinc-900 border border-white/5">
+                              <img 
+                                src={item.img} 
+                                alt={item.title} 
+                                className="w-full h-auto max-h-[180px] object-contain transition-all duration-700 
+                                         md:grayscale md:opacity-50 group-hover:grayscale-0 group-hover:opacity-100 
+                                         grayscale-0 opacity-100" 
+                              />
+                            </div>
+                          )}
+                          <div className="flex flex-col gap-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-mono text-blue-500 font-bold tracking-widest">{item.date}</span>
+                              <span className="text-[9px] px-2 py-0.5 bg-blue-900/30 text-blue-400 rounded-md border border-blue-500/20 font-bold uppercase">{item.tag}</span>
+                            </div>
+                            <h3 className="text-xl font-bold tracking-tight uppercase group-hover:text-blue-400 transition-colors">{item.title}</h3>
+                            <p className="text-gray-500 text-sm font-light leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all">{item.desc}</p>
+                          </div>
                         </div>
-                      )}
-                      <div className="flex flex-col gap-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono text-blue-500 font-bold tracking-widest">{item.date}</span>
-                          <span className="text-[9px] px-2 py-0.5 bg-blue-900/30 text-blue-400 rounded-md border border-blue-500/20 font-bold uppercase">{item.tag}</span>
-                        </div>
-                        <h3 className="text-xl font-bold tracking-tight uppercase group-hover:text-blue-400 transition-colors">{item.title}</h3>
-                        <p className="text-gray-500 text-sm font-light leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all">{item.desc}</p>
                       </div>
+
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
 
+        {/* --- Repository Section --- */}
         <section id="repos" className="py-32 border-t border-white/5 relative">
-          {/* 背景流光装饰 */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 blur-[120px] -z-10 pointer-events-none" />
           
           <div className="flex items-end justify-between mb-20">
