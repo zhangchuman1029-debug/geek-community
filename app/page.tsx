@@ -35,7 +35,7 @@ export default function Home() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         
-        {/* --- Hero Section 保持完美状态 --- */}
+        {/* --- Hero Section --- */}
         <header className="pt-48 pb-32">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="flex items-center gap-3 mb-10">
@@ -62,7 +62,7 @@ export default function Home() {
           </motion.div>
         </header>
 
-        {/* --- Timeline Section: 全新交替波形布局 --- */}
+        {/* --- Timeline Section: 极致裸感布局 --- */}
         <section id="timeline" className="py-32 border-t border-white/5">
           <div className="flex justify-between items-end mb-16">
             <h2 className="text-5xl font-black italic tracking-tighter uppercase">Growth Axis</h2>
@@ -70,60 +70,56 @@ export default function Home() {
           </div>
           
           <div className="relative md:overflow-x-auto scrollbar-hide">
-            {/* 电脑端高度固定，制造上下分布的空间 */}
-            <div className="relative md:flex md:w-max md:gap-8 md:h-[650px] md:items-center">
+            {/* 增加了容器高度，适应无限制高度的图片 */}
+            <div className="relative md:flex md:w-max md:gap-16 md:h-[700px] md:items-center pt-10 md:pt-0">
               
-              {/* 贯穿全局的核心轴线 (居中) */}
+              {/* 核心轴线 (居中) */}
               <div className="hidden md:block absolute top-1/2 left-0 right-0 h-[1px] bg-blue-500/20 z-0" />
 
               {timelineData.map((item, index) => {
-                // 判断偶数/奇数：偶数在下，奇数在上
                 const isEven = index % 2 === 0;
 
                 return (
                   <motion.div 
                     key={index} 
-                    initial={{ opacity: 0, y: isEven ? 40 : -40 }} // 从上下两端汇聚的动画
+                    initial={{ opacity: 0, y: isEven ? 40 : -40 }} 
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ delay: index * 0.15, duration: 0.6, ease: "easeOut" }}
-                    // 容器：手机端正常排列，电脑端变成相对定位占位块
-                    className="relative flex flex-col md:block md:w-[340px] md:h-full flex-none mb-20 md:mb-0 group z-10"
+                    className="relative flex flex-col md:block md:w-[360px] md:h-full flex-none mb-24 md:mb-0 group z-10"
                   >
-                    {/* 极简连接线 (仅电脑端显示) */}
-                    <div className={`hidden md:block absolute left-1/2 w-[1px] bg-blue-500/20 group-hover:bg-blue-400 group-hover:shadow-[0_0_8px_rgba(59,130,246,0.8)] transition-all duration-500 z-0 ${
-                      isEven ? 'top-1/2 h-12' : 'bottom-1/2 h-12'
+                    {/* 连接光线 */}
+                    <div className={`hidden md:block absolute left-1/2 w-[1px] bg-blue-500/20 group-hover:bg-blue-400 group-hover:shadow-[0_0_12px_rgba(59,130,246,0.8)] transition-all duration-500 z-0 ${
+                      isEven ? 'top-1/2 h-16' : 'bottom-1/2 h-16'
                     }`} />
 
-                    {/* 卡片绝对定位逻辑 */}
                     <div className={`relative md:absolute md:w-full md:left-0 z-10 ${
-                      isEven 
-                        ? 'md:top-1/2 md:pt-12' // 偶数排在轴线下方
-                        : 'md:bottom-1/2 md:pb-12' // 奇数排在轴线上方
+                      isEven ? 'md:top-1/2 md:pt-16' : 'md:bottom-1/2 md:pb-16'
                     }`}>
                       
-                      {/* 卡片视觉容器 (保持之前调校好的高级感) */}
-                      <div className="relative rounded-2xl p-px bg-gradient-to-b from-white/10 to-transparent hover:from-blue-500/50 transition-all duration-500">
-                        <div className="bg-[#030712] rounded-2xl overflow-hidden p-5 shadow-2xl">
-                          {item.img && (
-                            <div className="relative mb-6 rounded-lg overflow-hidden bg-zinc-900 border border-white/5">
-                              <img 
-                                src={item.img} 
-                                alt={item.title} 
-                                className="w-full h-auto max-h-[180px] object-contain transition-all duration-700 
-                                         md:grayscale md:opacity-50 group-hover:grayscale-0 group-hover:opacity-100 
-                                         grayscale-0 opacity-100" 
-                              />
-                            </div>
-                          )}
-                          <div className="flex flex-col gap-3">
-                            <div className="flex items-center justify-between">
-                              <span className="text-[10px] font-mono text-blue-500 font-bold tracking-widest">{item.date}</span>
-                              <span className="text-[9px] px-2 py-0.5 bg-blue-900/30 text-blue-400 rounded-md border border-blue-500/20 font-bold uppercase">{item.tag}</span>
-                            </div>
-                            <h3 className="text-xl font-bold tracking-tight uppercase group-hover:text-blue-400 transition-colors">{item.title}</h3>
-                            <p className="text-gray-500 text-sm font-light leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all">{item.desc}</p>
+                      {/* 🔥 彻底去除卡片背景和边框的纯净内容区 */}
+                      <div className="relative transition-transform duration-500 group-hover:-translate-y-2">
+                        
+                        {/* 图片：解除高度限制，自适应原始比例 */}
+                        {item.img && (
+                          <div className="relative mb-6 rounded-xl overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-shadow duration-500">
+                            <img 
+                              src={item.img} 
+                              alt={item.title} 
+                              // w-full h-auto 确保图片百分百完整显示，不裁切、不压缩
+                              className="w-full h-auto object-cover transition-all duration-700 md:grayscale md:opacity-40 group-hover:grayscale-0 group-hover:opacity-100 grayscale-0 opacity-100" 
+                            />
                           </div>
+                        )}
+
+                        {/* 文字内容直接浮于纯黑背景之上 */}
+                        <div className="flex flex-col gap-3 px-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-mono text-blue-500 font-bold tracking-widest">{item.date}</span>
+                            <span className="text-[9px] px-2 py-0.5 bg-blue-900/30 text-blue-400 rounded-md font-bold uppercase">{item.tag}</span>
+                          </div>
+                          <h3 className="text-2xl font-bold tracking-tight uppercase group-hover:text-blue-400 transition-colors">{item.title}</h3>
+                          <p className="text-gray-500 text-sm font-light leading-relaxed">{item.desc}</p>
                         </div>
                       </div>
 
