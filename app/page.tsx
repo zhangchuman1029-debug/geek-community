@@ -1,38 +1,37 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Terminal, Sparkles, Code2, GitBranch, Cpu, Layers, Activity, Rss, Target, Zap, Binary } from "lucide-react";
+import { Terminal, Sparkles, Code2, GitBranch, Cpu, Layers, Target, Zap } from "lucide-react";
 import { useId } from "react";
 
-// 1. 数据结构升级：新增 type (对应参考图的图例) 和 img (你的自定义插图)
+// 1. 数据按时间正序排列（从左到右：4.20 -> 4.22 -> 4.24），保证原比例图片完整
 const timelineData = [
-  { 
-    date: "2026.04.24", 
-    title: "Cloud RSS Automation", 
-    desc: "CC 接入 RSS，实现云端 WebDAV 仓库自动 RSS 服务初始化。", 
-    tag: "Auto",
-    type: "Skill", // 事件类型：Skill / Core / PKM / UI 等
-    img: "/screenshot-424.png" // 你的插图路径
-  },
-  { 
-    date: "2026.04.22", 
-    title: "Obsidian CLI Integration", 
-    desc: "CC 接入 Obsidian CLI，打通 WebDAV 协议，实现双向同步。", 
-    tag: "PKM",
-    type: "Architecture",
-    img: "/screenshot-422.png" 
-  },
   { 
     date: "2026.04.20", 
     title: "Claude Code & API Hub", 
     desc: "初始化 Claude Code，搭建社群 API 中转站，成功跑通 Skill。", 
     tag: "Core",
     type: "Codebase",
-    img: "/screenshot-420.png" 
+    img: "/screenshot-420.png" // 确保 public 文件夹下有此图片
+  },
+  { 
+    date: "2026.04.22", 
+    title: "Obsidian CLI Integration", 
+    desc: "CC 接入 Obsidian CLI，打通 WebDAV 协议，实现知识库双向同步。", 
+    tag: "PKM",
+    type: "Architecture",
+    img: "/screenshot-422.png" 
+  },
+  { 
+    date: "2026.04.24", 
+    title: "Cloud RSS Automation", 
+    desc: "CC 接入 RSS，实现云端 WebDAV 仓库自动 RSS 服务初始化。", 
+    tag: "Auto",
+    type: "Skill",
+    img: "/screenshot-424.png"
   },
 ];
 
-// 2. 图例映射（对应参考图左上角的图例）
 const milestoneTypes: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
   "Codebase": { label: "代码仓库", color: "bg-blue-500", icon: <Code2 size={12} className="text-blue-200" /> },
   "Architecture": { label: "系统架构", color: "bg-purple-500", icon: <Layers size={12} className="text-purple-200" /> },
@@ -41,16 +40,11 @@ const milestoneTypes: Record<string, { label: string; color: string; icon: React
 };
 
 export default function Home() {
-  const lineId = useId();
-
   return (
     <main className="min-h-screen bg-[#030712] text-white overflow-x-hidden font-sans selection:bg-blue-500/30">
       {/* 极客网格背景 */}
-      <div className="fixed inset-0 z-0 opacity-20 pointer-events-none" 
-           style={{ 
-             backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', 
-             backgroundSize: '50px 50px' 
-           }} />
+      <div className="fixed inset-0 z-0 opacity-10 pointer-events-none" 
+           style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '50px 50px' }} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         
@@ -61,129 +55,87 @@ export default function Home() {
               <div className="h-[1px] w-12 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
               <span className="text-blue-500 font-mono text-xs tracking-[0.4em] uppercase animate-pulse">System Online // Node: HK</span>
             </div>
-            <motion.h1 className="text-[12vw] sm:text-7xl md:text-9xl font-black tracking-tighter mb-8 md:mb-10 leading-[0.9] mix-blend-difference break-words">
-              GEEK <br /> COMMUNITY.
+            <motion.h1 className="text-[10vw] sm:text-7xl md:text-9xl font-black tracking-tighter mb-8 md:mb-10 leading-[0.9] mix-blend-difference break-words uppercase">
+              Geek <span className="text-gray-500">Axis</span>
             </motion.h1>
-            <p className="text-xl md:text-2xl text-gray-400 mb-16 max-w-2xl leading-relaxed font-light">
-              Full-stack Development & AI Exploration. <br />
-              <span className="text-gray-600 block mt-4 italic font-serif border-l-2 border-gray-800 pl-4">在数字荒原中，构建属于自己的理想国。</span>
-            </p>
-            <div className="flex flex-wrap gap-8">
-              <motion.a href="#repos" whileHover={{ scale: 1.05 }} className="px-12 py-5 bg-white text-black font-bold rounded-full no-underline shadow-blue-500/20">
-                <Terminal size={20} /> 查看仓库
-              </motion.a>
-              <motion.a href="#timeline" whileHover={{ scale: 1.05 }} className="group px-12 py-5 bg-transparent text-white font-bold rounded-full border border-gray-800 flex items-center gap-3 backdrop-blur-md no-underline">
-                <Sparkles size={20} className="text-blue-400" /> 发展轴
-              </motion.a>
-            </div>
+            <p className="text-gray-600 font-mono text-xs uppercase tracking-[0.3em] mt-4 pl-1">TIMELINE // 2026 // NODE_SYNC</p>
           </motion.div>
         </header>
 
-        {/* 2. Timeline Section (彻底重构：类似 Image 0 风格的响应式轴) */}
-        <section id="timeline" className="py-32 border-t border-gray-900">
-          <div className="flex items-end justify-between mb-24 flex-wrap gap-6">
-            <div>
-              <h2 className="text-5xl font-black italic tracking-tighter mb-2">GROWTH AXIS</h2>
-              <p className="text-gray-600 font-mono text-xs uppercase tracking-[0.3em]">Build Milestones & Community skill evolution</p>
-            </div>
-            
-            {/* 图例部分 (手机隐藏，桌面显示在右侧) */}
-            <div className="hidden md:flex gap-4 p-4 border border-gray-800 rounded-2xl bg-zinc-900/30 backdrop-blur-sm self-start">
-              {Object.entries(milestoneTypes).map(([key, value]) => (
-                <div key={key} className="flex items-center gap-2">
-                  <div className={`w-3 h-3 ${value.color} rounded-full`}></div>
-                  <span className="text-xs text-gray-400 font-mono">{value.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* 2. Timeline Section (升级版视觉) */}
+        <section id="timeline" className="py-32 border-t border-gray-white/5 relative z-10">
+          
+          {/* 中轴线 (仅手机端纵向) */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px] bg-blue-500/20 md:hidden z-0" />
           
           {/* 这里是响应式的关键容器：手机纵向，电脑横向且允许滚动 */}
-          <div className="relative md:overflow-x-auto md:pb-12 md:-mb-12 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent">
+          <div className="relative md:overflow-x-auto md:pb-12 scrollbar-hide scrollbar-track-transparent">
             
             {/* 电脑端横向轴的容器 */}
-            <div className="relative md:flex md:w-max md:gap-24">
+            <div className="relative md:flex md:w-max md:gap-16 pt-20">
               
-              {/* 轴线动画 (SVG实现，响应式适配路径) */}
-              <svg className="absolute inset-0 z-0 pointer-events-none md:static md:w-full md:h-[2px]" viewBox="0 0 100 100" preserveAspectRatio="none">
-                {/* 手机端的纵向线 */}
-                <motion.line 
-                  className="block md:hidden"
-                  x1="2.5rem" y1="0" x2="2.5rem" y2="100" 
-                  stroke="rgba(59,130,246,0.3)" strokeWidth="1" strokeDasharray="5 5"
-                />
-                {/* 电脑端的横向线 */}
-                <motion.line 
-                  className="hidden md:block"
-                  x1="0" y1="50" x2="100" y2="50" 
-                  stroke="rgba(59,130,246,0.3)" strokeWidth="0.5" strokeDasharray="2 2"
-                />
-              </svg>
+              {/* 电脑端中轴虚线 */}
+              <div className="hidden md:block absolute top-[20px] left-0 right-0 h-[1px] bg-blue-500/10 z-0" />
 
               {/* 发展轴项目迭代 */}
               {timelineData.map((item, index) => {
-                const milestoneInfo = milestoneTypes[item.type];
+                const milestoneInfo = milestoneTypes[item.type] || milestoneTypes["Codebase"];
                 return (
                   <motion.div 
                     key={index}
-                    initial={{ opacity: 0, x: 50 }}
+                    initial={{ opacity: 0, x: 30 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
-                    transition={{ delay: index * 0.1, type: "spring", stiffness: 100, damping: 15 }}
-                    className="relative flex flex-col md:w-[350px] md:flex-none"
+                    transition={{ delay: index * 0.1, type: "spring", stiffness: 80, damping: 12 }}
+                    className="relative flex flex-col md:w-[320px] md:flex-none mb-32 md:mb-0 group"
                   >
-                    {/* 1. 轴上的节点 (参考图中的核心元素：色点+图标) */}
-                    <div className="relative mb-6 md:absolute md:top-1/2 md:-translate-y-1/2 md:left-0">
-                      {/* 手机端的节点定位 (靠左) */}
-                      <div className="block md:hidden absolute left-[1.5rem] top-1/2 -translate-y-1/2">
-                        <div className={`w-8 h-8 rounded-full ${milestoneInfo.color} flex items-center justify-center border-2 border-[#030712] shadow-2xl z-20 transition-all hover:scale-125`}>
-                          {milestoneInfo.icon}
+                    {/* ✅ 节点修正：十字星样式，确保浮在线上 */}
+                    <div className="absolute top-[-30px] md:top-[12px] left-[1.5rem] md:left-1/2 md:-translate-x-1/2 z-30">
+                      <div className="relative flex items-center justify-center">
+                        <div className={`w-10 h-10 rounded-full bg-[#030712] border-2 border-blue-500/50 flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110`}>
+                          <div className={`w-6 h-6 rounded-full ${milestoneInfo.color} flex items-center justify-center text-black`}>
+                            {milestoneInfo.icon}
+                          </div>
                         </div>
-                        <div className={`absolute inset-0 rounded-full animate-ping ${milestoneInfo.color} opacity-20`} />
-                      </div>
-                      {/* 电脑端的节点定位 (靠上) */}
-                      <div className="hidden md:block absolute top-[-1.5rem] left-1/2 -translate-x-1/2">
-                         <div className={`w-8 h-8 rounded-full ${milestoneInfo.color} flex items-center justify-center border-2 border-[#030712] shadow-2xl z-20 transition-all hover:scale-125`}>
-                          {milestoneInfo.icon}
-                         </div>
-                         <div className={`absolute inset-0 rounded-full animate-ping ${milestoneInfo.color} opacity-20`} />
+                        <div className={`absolute inset-0 rounded-full animate-ping ${milestoneInfo.color} opacity-10`} />
                       </div>
                     </div>
 
-                    {/* 2. 内容卡片 */}
-                    <div className="pl-24 md:pl-0 md:mt-24">
-                      {/* 插图 (如果有) - 这是你想要的修改 */}
-                      {/* 找到渲染图片的地方，建议改为这样 */}
-{item.img && (
-  <div className="relative group overflow-hidden rounded-2xl mb-6 border border-white/10 bg-gray-900">
-    <motion.img 
-      src={item.img} 
-      alt={item.title} 
-      className="w-full aspect-video object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-      whileHover={{ scale: 1.05 }}
-    />
-    {/* 增加一个底部的微弱发光渐变 */}
-    <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-transparent to-transparent opacity-60 pointer-events-none" />
-  </div>
-)}
-
-                      <div className="flex items-center gap-4 mb-4">
-                        <span className="text-xs font-mono text-blue-500 font-bold tracking-widest">{item.date}</span>
-                        <span className={`text-[10px] px-3 py-1 ${milestoneInfo.color} text-black rounded-full font-black tracking-tighter uppercase`}>
-                          {item.tag}
-                        </span>
-                      </div>
+                    {/* ✅ 内容卡片：原比例完整图片，黑白滤镜交互 */}
+                    <div className="pl-24 md:pl-0">
                       
-                      <h3 className="text-3xl font-bold text-white mb-6 group-hover:text-blue-400 transition-all leading-none tracking-tight">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-500 max-w-xl text-base font-light leading-relaxed">
-                        {item.desc}
-                      </p>
+                      {item.img && (
+                        <motion.div 
+                          className="relative rounded-2xl mb-8 bg-zinc-900 border border-white/5 overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.5)] group"
+                          whileHover={{ scale: 1.02 }}
+                        >
+                          <img 
+                            src={item.img} 
+                            alt={item.title} 
+                            // ✅ 修正的核心：object-contain + grayscale-0/grayscale + h-[200px]
+                            className="w-full h-[200px] object-contain transition-all duration-700 grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100" 
+                          />
+                          {/* 增加一个底部的微弱发光渐变，减少“贴纸感” */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity pointer-events-none" />
+                        </motion.div>
+                      )}
+
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-mono text-blue-500 font-bold tracking-tighter">{item.date}</span>
+                          <span className={`text-[10px] px-3 py-1 ${milestoneInfo.color} text-black rounded-full font-black uppercase tracking-tighter`}>
+                            {item.tag}
+                          </span>
+                        </div>
+                        
+                        <h3 className="text-2xl font-black mb-1 text-white group-hover:text-blue-400 transition-colors tracking-tight uppercase leading-none">
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-500 text-sm font-light leading-relaxed max-w-sm">
+                          {item.desc}
+                        </p>
+                      </div>
                     </div>
-                    
-                    {/* 手机端连接下一个节点的虚线 (Image 0 风格) */}
-                    <div className="block md:hidden absolute left-[2.5rem] top-12 bottom-0 w-[1px] bg-gradient-to-b from-blue-500/20 to-transparent" />
                   </motion.div>
                 );
               })}
@@ -192,7 +144,8 @@ export default function Home() {
         </section>
 
         {/* 3. Repository Section (保持原有精简版) */}
-        <section id="repos" className="py-32 border-t border-gray-900">
+        <section id="repos" className="py-32 border-t border-white/5">
+          {/* ...Repo 部分代码保持不变... */}
           <div className="flex items-end justify-between mb-20">
             <div>
               <h2 className="text-5xl font-black italic tracking-tighter mb-2">REPOSITORY</h2>
@@ -219,7 +172,7 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="py-24 text-center border-t border-gray-900">
+        <footer className="py-24 text-center border-t border-white/5">
           <p className="text-gray-800 font-mono text-xs tracking-[0.8em] uppercase mb-4">Geek Community // 2026</p>
           <div className="flex justify-center gap-4 text-gray-900">
              <Cpu size={16} />
