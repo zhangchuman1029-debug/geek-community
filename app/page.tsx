@@ -62,19 +62,19 @@ export default function Home() {
           </motion.div>
         </header>
 
-        {/* --- Timeline Section: 极致裸感布局 --- */}
-        <section id="timeline" className="py-32 border-t border-white/5">
-          <div className="flex justify-between items-end mb-16">
+        {/* --- Timeline Section: 全展现裸感布局 --- */}
+        <section id="timeline" className="py-24 border-t border-white/5">
+          <div className="flex justify-between items-end mb-12">
             <h2 className="text-5xl font-black italic tracking-tighter uppercase">Growth Axis</h2>
             <div className="hidden md:block h-[1px] flex-1 mx-12 bg-gradient-to-r from-blue-500/50 to-transparent" />
           </div>
           
           <div className="relative md:overflow-x-auto scrollbar-hide">
-            {/* 增加了容器高度，适应无限制高度的图片 */}
-            <div className="relative md:flex md:w-max md:gap-16 md:h-[700px] md:items-center pt-10 md:pt-0">
+            {/* 🔥 关键点：删除了固定高度 h-[700px]，改为自适应内容 */}
+            <div className="relative md:flex md:w-max md:gap-12 md:items-center py-20">
               
-              {/* 核心轴线 (居中) */}
-              <div className="hidden md:block absolute top-1/2 left-0 right-0 h-[1px] bg-blue-500/20 z-0" />
+              {/* 核心轴线 */}
+              <div className="hidden md:block absolute top-1/2 left-0 right-0 h-[1px] bg-blue-500/10 z-0" />
 
               {timelineData.map((item, index) => {
                 const isEven = index % 2 === 0;
@@ -82,44 +82,41 @@ export default function Home() {
                 return (
                   <motion.div 
                     key={index} 
-                    initial={{ opacity: 0, y: isEven ? 40 : -40 }} 
+                    initial={{ opacity: 0, y: isEven ? 20 : -20 }} 
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ delay: index * 0.15, duration: 0.6, ease: "easeOut" }}
-                    className="relative flex flex-col md:block md:w-[360px] md:h-full flex-none mb-24 md:mb-0 group z-10"
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    className="relative flex flex-col md:block md:w-[300px] md:h-full flex-none mb-16 md:mb-0 group z-10"
                   >
-                    {/* 连接光线 */}
-                    <div className={`hidden md:block absolute left-1/2 w-[1px] bg-blue-500/20 group-hover:bg-blue-400 group-hover:shadow-[0_0_12px_rgba(59,130,246,0.8)] transition-all duration-500 z-0 ${
-                      isEven ? 'top-1/2 h-16' : 'bottom-1/2 h-16'
+                    {/* 连接线：缩短至 32px (h-8)，让内容更紧凑 */}
+                    <div className={`hidden md:block absolute left-1/2 w-[1px] bg-blue-500/20 group-hover:bg-blue-400 transition-all duration-500 z-0 ${
+                      isEven ? 'top-1/2 h-8' : 'bottom-1/2 h-8'
                     }`} />
 
                     <div className={`relative md:absolute md:w-full md:left-0 z-10 ${
-                      isEven ? 'md:top-1/2 md:pt-16' : 'md:bottom-1/2 md:pb-16'
+                      isEven ? 'md:top-1/2 md:pt-8' : 'md:bottom-1/2 md:pb-8'
                     }`}>
                       
-                      {/* 🔥 彻底去除卡片背景和边框的纯净内容区 */}
-                      <div className="relative transition-transform duration-500 group-hover:-translate-y-2">
+                      <div className="relative transition-transform duration-500 group-hover:-translate-y-1">
                         
-                        {/* 图片：解除高度限制，自适应原始比例 */}
+                        {/* 🔥 缩小图片尺寸：max-w-[240px] 且居中，h-auto 保持原比例 */}
                         {item.img && (
-                          <div className="relative mb-6 rounded-xl overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-shadow duration-500">
+                          <div className="relative mb-4 rounded-lg overflow-hidden mx-auto max-w-[240px] shadow-lg group-hover:shadow-blue-500/10 transition-shadow">
                             <img 
                               src={item.img} 
                               alt={item.title} 
-                              // w-full h-auto 确保图片百分百完整显示，不裁切、不压缩
-                              className="w-full h-auto object-cover transition-all duration-700 md:grayscale md:opacity-40 group-hover:grayscale-0 group-hover:opacity-100 grayscale-0 opacity-100" 
+                              className="w-full h-auto object-contain transition-all duration-700 md:grayscale md:opacity-40 group-hover:grayscale-0 group-hover:opacity-100" 
                             />
                           </div>
                         )}
 
-                        {/* 文字内容直接浮于纯黑背景之上 */}
-                        <div className="flex flex-col gap-3 px-2">
+                        <div className="flex flex-col gap-2 text-center md:text-left">
                           <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-mono text-blue-500 font-bold tracking-widest">{item.date}</span>
-                            <span className="text-[9px] px-2 py-0.5 bg-blue-900/30 text-blue-400 rounded-md font-bold uppercase">{item.tag}</span>
+                            <span className="text-[9px] font-mono text-blue-500 font-bold tracking-tighter">{item.date}</span>
+                            <span className="text-[8px] px-1.5 py-0.5 bg-blue-900/20 text-blue-400 rounded font-bold uppercase border border-blue-500/10">{item.tag}</span>
                           </div>
-                          <h3 className="text-2xl font-bold tracking-tight uppercase group-hover:text-blue-400 transition-colors">{item.title}</h3>
-                          <p className="text-gray-500 text-sm font-light leading-relaxed">{item.desc}</p>
+                          <h3 className="text-lg font-bold tracking-tight uppercase group-hover:text-blue-400 transition-colors leading-tight">{item.title}</h3>
+                          <p className="text-gray-500 text-[12px] font-light leading-snug line-clamp-2 group-hover:line-clamp-none">{item.desc}</p>
                         </div>
                       </div>
 
